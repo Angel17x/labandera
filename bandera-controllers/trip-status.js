@@ -32,10 +32,10 @@ var timeout;
 		app.TripStatusComponent.prototype.tasaCambio=null;
 		app.TripStatusComponent.prototype.tasaCambio=app.TripStatusComponent.prototype.service.getCurrencies();
 		app.TripStatusComponent.prototype.buscar();
-		// app.TripStatusComponent.prototype.tiempo = setInterval(() => {
-		// 	app.TripStatusComponent.prototype.buscar();
-		// 	app.TripStatusComponent.prototype.conecctionStatus=window.navigator.onLine;
-		// }, 30000);
+		app.TripStatusComponent.prototype.tiempo = setInterval(() => {
+			app.TripStatusComponent.prototype.buscar();
+			app.TripStatusComponent.prototype.conecctionStatus=window.navigator.onLine;
+		 }, 10000);
 	}
 	
 	app.TripStatusComponent.prototype.getCantidadSelected=function(data){
@@ -51,7 +51,6 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValueFirst=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
-		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('first_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.first_page == null || app.TripStatusComponent.prototype.pagingActualViaje.first_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.first_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.first_page);
@@ -60,7 +59,6 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValuePrevious=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
-		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('previous_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.previous_page == null || app.TripStatusComponent.prototype.pagingActualViaje.previous_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.previous_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
@@ -69,7 +67,6 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValueLast=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
-		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('last_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.last_page == null || app.TripStatusComponent.prototype.pagingActualViaje.last_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.last_page == "")) {
@@ -80,7 +77,6 @@ var timeout;
 	//obtener valor siguiente al darle click a next
 	app.TripStatusComponent.prototype.getValueNext=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
-		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('next_page')){
 			
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.next_page == null || app.TripStatusComponent.prototype.pagingActualViaje.next_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.next_page == "")) {
@@ -122,17 +118,41 @@ var timeout;
 				if((app.TripStatusComponent.prototype.pagingActualViaje.next_page==null || app.TripStatusComponent.prototype.pagingActualViaje.next_page==undefined)&& (app.TripStatusComponent.prototype.pagingActualViaje.previous_page==null || app.TripStatusComponent.prototype.pagingActualViaje.previous_page==undefined)) {
 					app.TripStatusComponent.prototype.callServices(null,"&limit="+app.TripStatusComponent.prototype.detallePorPaginaViaje);
 				}
+
+				let page = app.TripStatusComponent.prototype.pageSelectedViaje
+				let cambioPage = page => {
+					if(page == 1){
+						return page+1
+					}
+					if(page == 2){
+						return page+1
+					}
+					if(page == 3){
+						return page=1
+					}
+					
+				}	
 				if(app.TripStatusComponent.prototype.hastaFinal==true){
 					if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("next_page")){
-						app.TripStatusComponent.prototype.callServices(null,app.TripStatusComponent.prototype.pagingActualViaje.next_page);
+						app.TripStatusComponent.prototype.listRegister = []
+						app.TripStatusComponent.prototype.callServices(cambioPage(page),app.TripStatusComponent.prototype.pagingActualViaje.next_page);
 					}
 				}else{
 					if(app.TripStatusComponent.prototype.hastaInicio==true){
-						if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("previous_page")){
-							app.TripStatusComponent.prototype.callServices(null,app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
+						if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("first_page")){
+							app.TripStatusComponent.prototype.listRegister = []
+							app.TripStatusComponent.prototype.callServices(cambioPage(page), app.TripStatusComponent.prototype.pagingActualViaje.first_page);
 						}	
+					}else{
+						if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("previous_page")){
+							app.TripStatusComponent.prototype.listRegister = []
+							page=1
+							app.TripStatusComponent.prototype.callServices(cambioPage(page),app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
+							
+						}
 					}
 				}
+				
 			}
 		}
 	}
@@ -185,11 +205,9 @@ var timeout;
 						} else {
 							app.TripStatusComponent.prototype.totalPageViaje = auxP + 1;
 						}
+	
 
-						
-			
-							if(app.TripStatusComponent.prototype.hastaInicio==false)
-							{
+							if(app.TripStatusComponent.prototype.hastaInicio==true){
 								if (data.hasOwnProperty('next_page')) {
 
 									if (data.next_page == null || data.next_page == undefined || data.next_page == "") {
@@ -206,19 +224,18 @@ var timeout;
 									app.TripStatusComponent.prototype.hastaInicio=true;
 									app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
 								}
-							}
-											
-							if(app.TripStatusComponent.prototype.hastaFinal==false)
-							{
+
 							if (data.hasOwnProperty('previous_page')) {
 
-								
-								if (data.previous_page == null || data.previous_page == undefined || data.previous_page == "") {
-									app.TripStatusComponent.prototype.hastaInicio=false;
+								app.TripStatusComponent.prototype.pagingActualViaje.previous_page=data.previous_page
+
+								if (data.previous_page == null || data.previous_page == undefined || data.previous_page === "") {
+									app.TripStatusComponent.prototype.hastaInicio=true;
 									app.TripStatusComponent.prototype.hastaFinal=true;
 									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+
 								} else {
-									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.hastaInicio=false;
 									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = data.previous_page;
 									app.TripStatusComponent.prototype.querys=data.previous_page;
 								}
@@ -227,8 +244,80 @@ var timeout;
 								app.TripStatusComponent.prototype.hastaFinal=true;
 								app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
 							}
-						}
+							
+							if(data.hasOwnProperty('first_page')){
+									if (data.first_page == null || data.first_page == undefined || data.first_page == "") {
+										app.TripStatusComponent.prototype.hastaFinal=false;
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.first_page = null;
+									} else {
+										app.TripStatusComponent.prototype.hastaFinal=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.first_page = data.first_page;
+										app.TripStatusComponent.prototype.querys=data.first_page;
+									}
+							}else{
+								app.TripStatusComponent.prototype.hastaFinal=false;
+								app.TripStatusComponent.prototype.hastaInicio=true;
+								app.TripStatusComponent.prototype.pagingActualViaje.first_page = null;
+							}
+
+							}else{
+
+
+								if(data.hasOwnProperty('first_page')){
+									if (data.first_page == null || data.first_page == undefined || data.first_page == "") {
+										app.TripStatusComponent.prototype.hastaFinal=false;
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.first_page = null;
+									} else {
+										app.TripStatusComponent.prototype.hastaFinal=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.first_page = data.first_page;
+										app.TripStatusComponent.prototype.querys=data.first_page;
+									}
+								}else{
+									app.TripStatusComponent.prototype.hastaFinal=false;
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.first_page = null;
+								}								
+								if (data.hasOwnProperty('next_page')) {
+
+									if (data.next_page == null || data.next_page == undefined || data.next_page == "") {
+										app.TripStatusComponent.prototype.hastaFinal=false;
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
+									} else {
+										app.TripStatusComponent.prototype.hastaFinal=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.next_page = data.next_page;
+										app.TripStatusComponent.prototype.querys=data.next_page;
+									}
+									} else {
+										app.TripStatusComponent.prototype.hastaFinal=false;
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
+									}
+								if (data.hasOwnProperty('previous_page')) {
+
+									if (data.previous_page == null || data.previous_page == undefined || data.previous_page == "") {
+									app.TripStatusComponent.prototype.hastaInicio=false;
+									app.TripStatusComponent.prototype.hastaFinal=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+
+									} else {
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = data.previous_page;
+									app.TripStatusComponent.prototype.querys=data.previous_page;
+									}
+								} else {
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.hastaFinal=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+									}
+							}
+							
+							
+								
 						
+											
 							if(app.TripStatusComponent.prototype.hastaFinal==true)
 							{
 								if(data.hasOwnProperty('last_page')){
@@ -237,7 +326,6 @@ var timeout;
 									if (data.lastpage == null || data.last_page == undefined || data.last_page == "") {
 										app.TripStatusComponent.prototype.hastaInicio=false;
 										app.TripStatusComponent.prototype.hastaFinal=true;
-										app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
 									}else{
 										app.TripStatusComponent.prototype.hastaInicio=true;
 										app.TripStatusComponent.prototype.pagingActualViaje.last_page = data.last_page;
@@ -248,10 +336,30 @@ var timeout;
 									app.TripStatusComponent.prototype.hastaFinal=false;
 									app.TripStatusComponent.prototype.pagingActualViaje.last_page = null;
 								}
+							}else{
+								if (data.hasOwnProperty('previous_page')) {
+
+								if (data.previous_page == null || data.previous_page == undefined || data.previous_page == "") {
+									app.TripStatusComponent.prototype.hastaInicio=false;
+									app.TripStatusComponent.prototype.hastaFinal=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+								} else {
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = data.previous_page;
+									app.TripStatusComponent.prototype.querys=data.previous_page;
+								}
+								} else {
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.hastaFinal=true;
+									app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+								}
+							}
+
+
+							if(app.TripStatusComponent.prototype.hastaFinal==true && app.TripStatusComponent.prototype.hastaInicio==true){
 							}
 						
 						if (data.hasOwnProperty(key)) {
-							console.log(key)
 							var objeto = {};
 							app.TripStatusComponent.prototype.listRegister = [];
 							for (var i = 0; i < data[key].length; i++) {
