@@ -37,9 +37,6 @@ var timeout;
 		// 	app.TripStatusComponent.prototype.conecctionStatus=window.navigator.onLine;
 		// }, 30000);
 	}
-	app.TripStatusComponent.prototype.ngOnChanges=function(data){
-		console.log("data en changes", data);
-	}
 	
 	app.TripStatusComponent.prototype.getCantidadSelected=function(data){
 		if (!(data == null || data == undefined || data == "")) {
@@ -54,6 +51,7 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValueFirst=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
+		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('first_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.first_page == null || app.TripStatusComponent.prototype.pagingActualViaje.first_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.first_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.first_page);
@@ -62,6 +60,7 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValuePrevious=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
+		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('previous_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.previous_page == null || app.TripStatusComponent.prototype.pagingActualViaje.previous_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.previous_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
@@ -70,6 +69,8 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.getValueLast=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
+		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
+		
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('last_page')) {
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.last_page == null || app.TripStatusComponent.prototype.pagingActualViaje.last_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.last_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.last_page);
@@ -79,12 +80,11 @@ var timeout;
 	//obtener valor siguiente al darle click a next
 	app.TripStatusComponent.prototype.getValueNext=function(data){
 		app.TripStatusComponent.prototype.listRegister = [];
-		console.log('estas en getValueNext !!!!!!!!!!!!!!!', data)
+		console.log(app.TripStatusComponent.prototype.pagingActualViaje)
 		if (app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty('next_page')){
-			console.log('si existe la propiedad next_page!!!!!!!!')
+			
 			if (!(app.TripStatusComponent.prototype.pagingActualViaje.next_page == null || app.TripStatusComponent.prototype.pagingActualViaje.next_page == undefined || app.TripStatusComponent.prototype.pagingActualViaje.next_page == "")) {
 				app.TripStatusComponent.prototype.callServices(data, app.TripStatusComponent.prototype.pagingActualViaje.next_page);
-				console.log('final de getValueNext + ', "todo ok",data, app.TripStatusComponent.prototype.pagingActualViaje.next_page)
 			}
 		}
 	}
@@ -92,6 +92,7 @@ var timeout;
 		app.TripStatusComponent.prototype.pageSelectedViaje = data;
 	}
 	app.TripStatusComponent.prototype.ngOnDestroy=function(){
+
 		if (app.TripStatusComponent.prototype.tiempo) {
 			clearInterval(app.TripStatusComponent.prototype.tiempo);
 		}
@@ -115,7 +116,6 @@ var timeout;
 		app.TripStatusComponent.prototype.jsonFilterBuscar.departure_date.time_zone=getTimeZone();
 		app.TripStatusComponent.prototype.jsonFilterBuscar.sort={"DEPARTURE_DATE":"asc"};
 		if(app.TripStatusComponent.prototype.querys==null){
-			console.log('querys')
 			app.TripStatusComponent.prototype.callServices(1,"&limit="+app.TripStatusComponent.prototype.detallePorPaginaViaje);
 		}else{
 			if(app.TripStatusComponent.prototype.pagingActualViaje!=null){
@@ -137,46 +137,39 @@ var timeout;
 		}
 	}
 	app.TripStatusComponent.prototype.callServices = function (data,parametros) {
-		console.log('estas en callService -> '+data);
-		console.log('estos son los parametros -> '+parametros);
+		
 		
 		if(data!=null){
 			app.TripStatusComponent.prototype.pageSelectedViaje = data;
-			console.log('si data no es nula ', app.TripStatusComponent.prototype.pageSelectedViaje)
 		}
 		let mensajeAll=_("message_dflt_4");
 		if(parametros!=null && parametros.length!=0){
 			if(parametros.charAt(0)!="&"){
 				parametros="&"+parametros;
-				console.log('si los parametros no son nulos ', parametros)
 			}
 		}
 		let querys="&type=PAGINATE"+parametros;
 		let request = app.TripStatusComponent.prototype.service.callServicesHttp("travel-report-available", querys, app.TripStatusComponent.prototype.jsonFilterBuscar);
 		request.subscribe(data => {
+			
 			app.TripStatusComponent.prototype.procesarRespuestaTravel(data);
-			console.log('estas en la funcion request.subscribe de callService ', 'todo ok',data)
 		}, err => {
 			app.TripStatusComponent.prototype.mensaje = app.TripStatusComponent.prototype.service.processError(err, mensajeAll);
 			//app.TripStatusComponent.prototype.msg.error();
 		});
 	}
 	app.TripStatusComponent.prototype.procesarRespuestaTravel=function(data){
-		console.log('entrando a procesar respuesta', data)
 		var key="results";
 		let mensajeAll=capitalizeOnly(_("message_dflt_4"));
 		if(data==null || data==undefined || data==""){
-			console.log('el error radica aqui!!!!!!!!!!!!!!!!!!11')
+			
 			app.TripStatusComponent.prototype.listRegister=[];
 			app.TripStatusComponent.prototype.mensaje=mensajeAll;
 			app.TripStatusComponent.prototype.msg.error();
 		}else{
 			if(data.status_http==200){
-				console.log('status 200 llego la data en procesar respuesta!!!!!!')
 				if(data.hasOwnProperty("count")){
-					console.log('si existe count de data en procesarRespuesta ', data.count)
 					if(data.count==null || data.count==undefined || data.count==0){
-						console.log('el error radica aqui!!!!!!!!!!!!!!!!!!!!!')
 						app.TripStatusComponent.prototype.listRegister=[];
 						app.TripStatusComponent.prototype.mensaje="No hay viajes para la fecha seleccionada";
 						// app.TripStatusComponent.prototype.msg.warning();
@@ -185,7 +178,6 @@ var timeout;
 						app.TripStatusComponent.prototype.pagingActualViaje = {};
 						app.TripStatusComponent.prototype.pagingActualViaje.count = data.count;
 						let arr = app.TripStatusComponent.prototype.pagingActualViaje.count
-						console.log('cantidad de posiciones de data en procesarRespuesta => ',arr)
 						let auxP = Math.floor(app.TripStatusComponent.prototype.pagingActualViaje.count / app.TripStatusComponent.prototype.detallePorPaginaViaje);
 						let restoAux = ((app.TripStatusComponent.prototype.pagingActualViaje.count) % app.TripStatusComponent.prototype.detallePorPaginaViaje);
 						if (restoAux == 0) {
@@ -193,28 +185,34 @@ var timeout;
 						} else {
 							app.TripStatusComponent.prototype.totalPageViaje = auxP + 1;
 						}
-						if(app.TripStatusComponent.prototype.hastaInicio==false){
 
-							if (data.hasOwnProperty('next_page')) {
-								console.log('si existe next_page ', data.hasOwnProperty('next_page'))
-								if (data.next_page == null || data.next_page == undefined || data.next_page == "") {
+						
+			
+							if(app.TripStatusComponent.prototype.hastaInicio==false)
+							{
+								if (data.hasOwnProperty('next_page')) {
+
+									if (data.next_page == null || data.next_page == undefined || data.next_page == "") {
+										app.TripStatusComponent.prototype.hastaFinal=false;
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
+									} else {
+										app.TripStatusComponent.prototype.hastaFinal=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.next_page = data.next_page;
+										app.TripStatusComponent.prototype.querys=data.next_page;
+									}
+								} else {
 									app.TripStatusComponent.prototype.hastaFinal=false;
 									app.TripStatusComponent.prototype.hastaInicio=true;
 									app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
-								} else {
-									app.TripStatusComponent.prototype.hastaFinal=true;
-									app.TripStatusComponent.prototype.pagingActualViaje.next_page = data.next_page;
-									app.TripStatusComponent.prototype.querys=data.next_page;
-									console.log('querys todo ok y funcionando', app.TripStatusComponent.prototype.querys)
 								}
-							} else {
-								app.TripStatusComponent.prototype.hastaFinal=false;
-								app.TripStatusComponent.prototype.hastaInicio=true;
-								app.TripStatusComponent.prototype.pagingActualViaje.next_page = null;
 							}
-						}						
-						if(app.TripStatusComponent.prototype.hastaFinal==false){
+											
+							if(app.TripStatusComponent.prototype.hastaFinal==false)
+							{
 							if (data.hasOwnProperty('previous_page')) {
+
+								
 								if (data.previous_page == null || data.previous_page == undefined || data.previous_page == "") {
 									app.TripStatusComponent.prototype.hastaInicio=false;
 									app.TripStatusComponent.prototype.hastaFinal=true;
@@ -225,17 +223,37 @@ var timeout;
 									app.TripStatusComponent.prototype.querys=data.previous_page;
 								}
 							} else {
-								app.TripStatusComponent.prototype.hastaInicio=false;
+								app.TripStatusComponent.prototype.hastaInicio=true;
 								app.TripStatusComponent.prototype.hastaFinal=true;
 								app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
 							}
 						}
+						
+							if(app.TripStatusComponent.prototype.hastaFinal==true)
+							{
+								if(data.hasOwnProperty('last_page')){
+								
+									app.TripStatusComponent.prototype.pagingActualViaje.last_page = data.last_page;
+									if (data.lastpage == null || data.last_page == undefined || data.last_page == "") {
+										app.TripStatusComponent.prototype.hastaInicio=false;
+										app.TripStatusComponent.prototype.hastaFinal=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.previous_page = null;
+									}else{
+										app.TripStatusComponent.prototype.hastaInicio=true;
+										app.TripStatusComponent.prototype.pagingActualViaje.last_page = data.last_page;
+										app.TripStatusComponent.prototype.querys=data.last_page;
+									}
+									}else{
+									app.TripStatusComponent.prototype.hastaInicio=true;
+									app.TripStatusComponent.prototype.hastaFinal=false;
+									app.TripStatusComponent.prototype.pagingActualViaje.last_page = null;
+								}
+							}
+						
 						if (data.hasOwnProperty(key)) {
-							console.log('esta es la key + ', key)
 							console.log(key)
 							var objeto = {};
 							app.TripStatusComponent.prototype.listRegister = [];
-							console.log('esta es data[key]', data[key])
 							for (var i = 0; i < data[key].length; i++) {
 								var objeto = app.TripStatusComponent.prototype.formattedDataViajes(data[key][i]);
 								if (objeto != null) {
@@ -243,22 +261,13 @@ var timeout;
 								}
 							}
 							
-								
-								
-							
-							let registros = app.TripStatusComponent.prototype.listRegister
-							return console.log(registros)
-							console.log(app.TripStatusComponent.prototype.listRegister, "objeto =>", objeto)
-
 							app.TripStatusComponent.prototype.pagingActualViaje.count = data.count;
 						}else{
 							app.TripStatusComponent.prototype.listRegister=[];
 						}
 					}
-					console.log('final de procesar la respuesta.............!!!!!!!!!!!!!!')
 				}else{
 					app.TripStatusComponent.prototype.listRegister=[];
-					console.log('lista de registro se encuentra vacio !!!!!!!!!!!!!!!!')
 				}
 			}else{
 				app.TripStatusComponent.prototype.mensaje=app.TripStatusComponent.prototype.service.processMessageError(data,mensajeAll);
@@ -267,7 +276,7 @@ var timeout;
 	}
 	app.TripStatusComponent.prototype.formattedDataViajes=function(data){
 		if(data==null || data==undefined || data==""){
-			console.log('is data null ', data)
+			
 			return null;
 		}else{
 			
