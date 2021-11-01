@@ -1,0 +1,166 @@
+<header>
+	<section class="header-top">
+		<div class="container">
+			<div class="information">
+				<section class="portlet">
+					<div class="portlet-content">
+						<div class="portlet-content-container">
+							<div class="portlet-body" style="padding:10px;">
+								<h6 class="font-bold" style="cursor:pointer;color:white;" routerLink="/trip-status">ESTADO DE VIAJES</h6>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="social-media">
+				<img src="assets/images/facebook_white.svg" height="12px">
+				<img src="assets/images/twitter_white.svg" height="11px">
+				<img src="assets/images/instagram_white.svg" height="11px">
+			</div>
+		</div>
+	</section>
+	
+	<section class="principal-menu type1">
+		<div style="display:flex;">
+			<button id="button_navbar_main" class="d-lg-none" type="button" (click)="showCanvas()" style="margin:10px;border:none;background:transparent;"><img src="assets/images/reorder.svg" height="24px"></button>
+			<div id="bar1">
+				<img src="assets/images/estrella_blanca.png" height="50px">
+				<h6 class="alcaldia-text" style="color:white;font-size:23px;margin-top:15px;">Alcaldia de Caracas</h6>
+				
+			</div>
+		</div>
+		<div [class]="class_body">
+				<nav id="navbar_main" [class]="class_navbar">
+					<div class="container-fluid">
+						<a class="navbar-brand">
+							<picture class="ec-menu-brand__picture" routerLink="/init">	
+								<source  media="(min-width: 992px)" srcset="assets/images/logo3.png">
+								<source  media="(max-width: 991px)" srcset="assets/images/logo_bandera_color.png">
+								<img class="ec-menu-brand__img" height="50px" src="assets/images/logo3.png" alt="Logo Terminal la bandera">
+							</picture>
+						</a>
+						<ul class="navbar-nav ml-auto">
+							<li class="nav-item" *ngFor="let item of listMenu let i = index;" >
+								<a (click)="getRedirect(item)" *ngIf="i==0" class="nav-link menu1 font-bold" style="cursor:pointer;display:flex;"><img [src]="item.image" id="icono-reserva" style="margin-top:-5px;">&nbsp;<label>{{item.name}}</label></a>
+								<a (click)="getRedirect(item)" *ngIf="i!=0" class="nav-link menu1 font-regular" style="cursor:pointer;display:flex;">{{item.name}}</a>
+							</li>
+						</ul>
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item" style="display:flex;">
+							<a class="nav-link menu1 font-regular dropdown-toggle"  style="cursor:pointer;"  routerLink="/login" *ngIf="email==null">Iniciar sesión</a>
+							<a class="nav-link menu1 font-regular dropdown-toggle"  style="cursor:pointer;" routerLink="/login" *ngIf="email!=null">Apps&nbsp;&nbsp;</a>
+							<!--<a class="nav-link menu1 font-regular dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;" routerLink="/apps">{{email}}</a>-->
+							<a class="nav-link menu1 font-regular dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;" (click)="salir()" *ngIf="email!=null">Salir</a>
+							<!--<ul class="dropdown-menu dropdown-menu-end"  >
+							  <li><a class="dropdown-item font-regular" >Salir</a></li>
+							</ul>-->
+						</li>
+		</ul>
+	 </div>
+	</nav>
+</div>
+		<!--<div [class]="class_body"  style="height: 84px;">
+				<button id="button_navbar_main" class="d-sm-none" type="button" (click)="showCanvas()" style="margin:10px;border:none;background:transparent;"><img src="assets/images/reorder.svg" height="24px"></button>
+				<nav  id="navbar_main" [class]="class_navbar">
+					<div class="container-fluid">
+						<div class="offcanvas-header">  
+							<button class="btn-close float-end" (click)="closeCanvas()"></button>
+						</div>
+						<a class="navbar-brand">
+							<picture class="ec-menu-brand__picture">	
+								<source  media="(min-width: 992px)" srcset="assets/images/logo3.png">
+								<source  media="(max-width: 991px)" srcset="assets/images/logo3.png">
+								<img src="assets/images/logo3.png" height="50px" style="margin-right:10px;cursor:pointer;">
+							</picture>
+						</a>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ml-auto" *ngFor="let item of listMenu let i = index;">
+								<li class="nav-item" *ngIf="i==0">
+									<a (click)="getRedirect(item)" class="nav-link menu1 font-bold" style="cursor:pointer;display:flex;"><img [src]="item.image">&nbsp;{{item.name}}</a>
+								</li>
+								<li class="nav-item foco-inp" *ngIf="i!=0">
+									<a (click)="getRedirect(item)" class="nav-link menu1 font-regular" style="cursor:pointer;display:flex;">{{item.name}}</a>
+								</li>
+							</ul>
+							<ul class="navbar-nav ms-auto">
+								<li class="nav-item dropdown">
+									<a class="nav-link font-regular dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;"  routerLink="/login" *ngIf="email==null">Iniciar sesión</a>
+									<a class="nav-link font-regular dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;" routerLink="/apps" *ngIf="email!=null">{{email}}</a>
+									<ul class="dropdown-menu dropdown-menu-end" *ngIf="email!=null">
+									  <li><a class="dropdown-item" href="#" (click)="salir()">Salir</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+		</div>-->
+	</section>
+</header>
+
+
+<!--<header class="contenedor-fixed">
+	<section class="header-top">
+		<div class="container">
+			<div class="information">
+				<section class="portlet">
+					<div class="portlet-content">
+						<div class="portlet-content-container">
+							<div class="portlet-body">
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="social-media">
+				<img src="assets/images/facebook_white.svg" height="12px">
+				<img src="assets/images/twitter_white.svg" height="11px">
+				<img src="assets/images/instagram_white.svg" height="11px">
+			</div>
+		</div>
+	</section>
+	<section class="principal-menu type1" style="height: 84px;">
+		<div class="container" style="height: auto;">
+			<div class="navbar navbar-expand-lg" style="height: auto;">
+				<a class="navbar-brand">
+					<div style="display:flex;">
+						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+							<img src="assets/images/reorder.svg">
+						</button>
+						<img   routerLink="/init" src="assets/images/logo3.png" height="50px" style="margin-right:10px;cursor:pointer;">
+					</div>
+				</a>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link font-bold" style="cursor:pointer;display:flex;"  routerLink="/init"><img src="assets/images/home_white.svg">&nbsp;RESERVA TU VIAJE</a>
+						</li>
+						
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;">Rutas</a>
+						</li>
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;">Líneas</a>
+						</li>
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;">Servicios</a>
+						</li>
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;">Quienes Somos</a>
+						</li>
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;">Contacto</a>
+						</li>
+						<li class="nav-item foco-inp">
+							<a class="nav-link font-light" style="cursor:pointer;"  routerLink="/login" *ngIf="email==null">Iniciar sesión</a>
+							<a class="nav-link font-regular" style="cursor:pointer;" routerLink="/apps" *ngIf="email!=null">{{email}}</a>
+						</li>
+						<li class="nav-item foco-inp" *ngIf="email!=null">
+							<a class="nav-link font-light" style="cursor:pointer;" (click)="salir()"><b class="font-bold" >(Salir)</b></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+</header>-->
