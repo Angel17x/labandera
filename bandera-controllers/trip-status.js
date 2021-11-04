@@ -35,7 +35,7 @@ var timeout;
 		app.TripStatusComponent.prototype.tiempo = setInterval(() => {
 			app.TripStatusComponent.prototype.buscar();
 			app.TripStatusComponent.prototype.conecctionStatus=window.navigator.onLine;
-		 }, 10000);
+		 }, 7000);
 	}
 	
 	app.TripStatusComponent.prototype.getCantidadSelected=function(data){
@@ -119,35 +119,34 @@ var timeout;
 					app.TripStatusComponent.prototype.callServices(null,"&limit="+app.TripStatusComponent.prototype.detallePorPaginaViaje);
 				}
 
-				let page = app.TripStatusComponent.prototype.pageSelectedViaje
-				let cambioPage = page => {
-					if(page == 1){
-						return page+1
+				let paginaActual = app.TripStatusComponent.prototype.pageSelectedViaje
+				//let cantidadTotalItems = app.TripStatusComponent.prototype.pagingActualViaje.count
+				//let maxCantidadDeItems = app.TripStatusComponent.prototype.detallePorPaginaViaje
+				let cantidadTotalPaginas = app.TripStatusComponent.prototype.totalPageViaje
+				
+				let modifyValuePage = (page, total) => {
+					if(page < total){
+						return page+=1
 					}
-					if(page == 2){
-						return page+1
-					}
-					if(page == 3){
-						return page=1
-					}
-					
-				}	
+					page=1
+					return page
+				}
+				
 				if(app.TripStatusComponent.prototype.hastaFinal==true){
 					if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("next_page")){
 						app.TripStatusComponent.prototype.listRegister = []
-						app.TripStatusComponent.prototype.callServices(cambioPage(page),app.TripStatusComponent.prototype.pagingActualViaje.next_page);
+						app.TripStatusComponent.prototype.callServices(modifyValuePage(paginaActual, cantidadTotalPaginas),app.TripStatusComponent.prototype.pagingActualViaje.next_page);
 					}
 				}else{
 					if(app.TripStatusComponent.prototype.hastaInicio==true){
 						if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("first_page")){
 							app.TripStatusComponent.prototype.listRegister = []
-							app.TripStatusComponent.prototype.callServices(cambioPage(page), app.TripStatusComponent.prototype.pagingActualViaje.first_page);
+							app.TripStatusComponent.prototype.callServices(modifyValuePage(paginaActual, cantidadTotalPaginas), app.TripStatusComponent.prototype.pagingActualViaje.first_page);
 						}	
 					}else{
 						if(app.TripStatusComponent.prototype.pagingActualViaje.hasOwnProperty("previous_page")){
 							app.TripStatusComponent.prototype.listRegister = []
-							page=1
-							app.TripStatusComponent.prototype.callServices(cambioPage(page),app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
+							app.TripStatusComponent.prototype.callServices(modifyValuePage(paginaActual, cantidadTotalPaginas),app.TripStatusComponent.prototype.pagingActualViaje.previous_page);
 							
 						}
 					}
@@ -197,7 +196,7 @@ var timeout;
 						
 						app.TripStatusComponent.prototype.pagingActualViaje = {};
 						app.TripStatusComponent.prototype.pagingActualViaje.count = data.count;
-						let arr = app.TripStatusComponent.prototype.pagingActualViaje.count
+
 						let auxP = Math.floor(app.TripStatusComponent.prototype.pagingActualViaje.count / app.TripStatusComponent.prototype.detallePorPaginaViaje);
 						let restoAux = ((app.TripStatusComponent.prototype.pagingActualViaje.count) % app.TripStatusComponent.prototype.detallePorPaginaViaje);
 						if (restoAux == 0) {
